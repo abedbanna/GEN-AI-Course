@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chat Form with Responses</title>
+
+    <!-- Link Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+    <style>
+        /* Basic styling for the chat container */
+        .chat-container {
+            width: 80%;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            padding: 10px;
+            overflow-y: scroll;
+            max-height: 300px; /* Adjust the height as needed */
+        }
+
+        /* Style for user messages */
+        .user-message {
+            margin: 5px 0;
+            padding: 5px 10px;
+            border-radius: 5px;
+            background-color: #e2f7cb;
+            float: right;
+            clear: both;
+        }
+
+        /* Style for bot messages */
+        .bot-message {
+            margin: 5px 0;
+            padding: 5px 10px;
+            border-radius: 5px;
+            background-color: #c7ddf5;
+            float: left;
+            clear: both;
+        }
+
+        /* Styling for the input and submit button */
+        #user-message {
+            width: 70%;
+            padding: 8px;
+            margin-right: 5px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+
+        #send-button {
+            padding: 8px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#"></a>
+    <!-- Button for mobile devices -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+   <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item ">
+                <a class="nav-link" href="{% url 'index' %}">Home</a>
+            </li>
+
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'translate' %}">Translate</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'feedback' %}">Customer feedback</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'review' %}">Customer  review</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <h1>Translation</h1>
+
+    <form>
+        <div class="form-group">
+            <label for="lang">Select Language:</label>
+            <select name="lang" class="form-control">
+                <option>--</option>
+                <option value="Arabic">Arabic</option>
+                <option value="Italian">Italian</option>
+            </select>
+        </div>
+        <hr>
+
+        <div class="form-group">
+            <input type="text" id="user-message" name="message" value="{{message}}" class="form-control" placeholder="Type a message..." required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="send-button">Send</button>
+    </form>
+
+    <!-- Pre-defined responses -->
+    <div class="bot-message">{{response}}</div>
+    <!-- Add more pre-defined responses -->
+</div>
+
+<!-- Link Bootstrap JS (Optional, but required for certain Bootstrap features) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
