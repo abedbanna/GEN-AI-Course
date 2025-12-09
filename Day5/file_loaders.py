@@ -1,25 +1,19 @@
 import os
-from langchain.document_loaders import PyPDFLoader
-from langchain.document_loaders.generic import GenericLoader
-from langchain.document_loaders.blob_loaders.youtube_audio import YoutubeAudioLoader
-from langchain.document_loaders import WebBaseLoader
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.document_loaders.generic import GenericLoader
+from langchain_community.document_loaders.blob_loaders.youtube_audio import YoutubeAudioLoader
+from langchain_community.document_loaders import WebBaseLoader
 from langchain_community.document_loaders import AmazonTextractPDFLoader
-
-from langchain.document_loaders.parsers import OpenAIWhisperParser
-
+from langchain_community.document_loaders.parsers import OpenAIWhisperParser
 
 # PDF Loader example
 def configure_api():
     os.environ["OPENAI_API_KEY"] = ''
 
-
 def load_pdf(filename):
     loader = PyPDFLoader(filename)
     pages = loader.load()
     return pages
-
-
-
 
 # ! pip install yt_dlp
 # ! pip install pydub
@@ -32,12 +26,10 @@ def load_youTube(url):
     docs = loader.load()
     return docs
 
-
 def load_website(url):
     loader = WebBaseLoader(url)
     docs = loader.load()
     return docs
-
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
@@ -47,7 +39,6 @@ if __name__ == '__main__':
     # print(len(pages))
     # print(pages[0].page_content[0:500])
     # print(pages[0].metadata)
-
     #
     # # docs = load_youTube("https://www.youtube.com/watch?v=jGwO_UgTS7I")
     docs = load_website(
