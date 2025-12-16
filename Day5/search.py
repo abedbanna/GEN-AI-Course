@@ -1,26 +1,40 @@
-
-# Load vector database that was persisted earlier and check collection count in it
-from langchain.vectorstores import Chroma
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.chat_models import ChatOpenAI
+from langchain_community.vectorstores import Chroma
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnablePassthrough
 import os
-
+#pip install langchain-core
 persist_directory = 'docs/chroma/'
-os.environ["OPENAI_API_KEY"] = ''
+os.environ['OPENAI_API_KEY'] = ''
+
 embedding = OpenAIEmbeddings()
 vectordb = Chroma(persist_directory=persist_directory, embedding_function=embedding)
+retriever = vectordb.as_retriever()
 
-question = "List all papers  by al-banna"
+question = "what are the datasets used in this paper"
 
+llm = ChatOpenAI(temperature=0)
 
-llm = ChatOpenAI( temperature=0)
+prompt = ChatPromptTemplate.from_template("""
+Answer the question based on the following context:
 
-from langchain.chains import RetrievalQA
+Context: {context}
 
-qa_chain = RetrievalQA.from_chain_type(
-    llm,
-    retriever=vectordb.as_retriever()
+Question: {question}
+
+Answer:
+""")
+
+def format_docs(docs):
+    return "\n\n".join(doc.page_content for doc in docs)
+
+chain = (
+    {"context": retriever | format_docs, "question": RunnablePassthrough()}
+    | prompt
+    | llm
+    | StrOutputParser()
 )
 
-result = qa_chain({"query": question})
-print(result["result"])
+result = chain.invoke(question)
+print(result)
